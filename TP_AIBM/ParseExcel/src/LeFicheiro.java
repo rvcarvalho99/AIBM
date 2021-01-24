@@ -218,12 +218,12 @@ public class LeFicheiro {
                 if(!interventions.containsKey(inter))
                     interventions.put(inter,row.getCell(10).toString());
 
+
                 int date2=-1;
                 if(row.getCell(6)!=null)
                     date2 = dates.addData(trataDatas(row.getCell(6).toString()));
 
                 Procedure pr = new Procedure();
-
                 prof.addProf(row.getCell(1).toString());
                 pr.setProf(pro);
                 pr.setDate(data);
@@ -239,7 +239,7 @@ public class LeFicheiro {
 
                 if(row.getCell(6)!=null)
                     pr.setCanceldate(date2);
-                else pr.setIntervention(1);
+                else pr.setCanceldate(1);
 
                 if(row.getCell(7)!=null){
                     pro = (int) Double.parseDouble(row.getCell(7).toString());
@@ -315,6 +315,9 @@ public class LeFicheiro {
                 pr.setProf(pro);
                 pr.setDate(data);
                 pr.setCode_drug(coddrug);
+                pr.setQt(qt);
+                pr.setPvp(pvp);
+                pr.setCompart(comp);
                 if(prescripwithEP.containsKey(epnum))
                     pr.setJoinid(prescripwithEP.get(epnum));
                 else
@@ -395,9 +398,7 @@ public class LeFicheiro {
 
 
     public static void leFicheiro() throws IOException{
-        Diagnosis diag = new Diagnosis();
-        diag.setCode(0);
-        diagnosis.add(diag);
+        
         double total = 65618;
         int lastpercentage=0;
         File file = new File("urgency_episodes_new.xlsx");   //creating a new file instance
@@ -542,8 +543,12 @@ public class LeFicheiro {
 
                 if(date!=-1)
                     ds.setDate(date);
+                else
+                    ds.setDate(1);
                 if(p!=-1)
                     ds.setProf(p);
+                else
+                    ds.setProf(1);
                 ds.setReason(d);
                 ds.setDestination(dest);
 
@@ -567,7 +572,7 @@ public class LeFicheiro {
     public static void main(String[] args) throws IOException {
 
         dates.addData("null");
-        prof.addProf("null");
+        prof.addProf("1");
         lediagnosis();
         scriptsTabelas.codes(hier);
         hier.clear();
@@ -595,6 +600,7 @@ public class LeFicheiro {
         dates = null;
         scriptsTabelas.dim_prof(prof);
         prof = null;
+        scriptsTabelas.dim_cause(cause.getCauses());
         scriptsTabelas.dim_color(color);
         scriptsTabelas.dim_reason(reason);
         scriptsTabelas.dim_destination(destination);

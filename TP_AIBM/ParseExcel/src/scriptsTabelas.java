@@ -18,8 +18,11 @@ public class scriptsTabelas {
             FileOutputStream fos = new FileOutputStream(new File("povoamento2.sql"));
 
             for (Integer i : datas.keySet()) {
-
-                String query = "insert into dim_date values (" + i + ", \"" + datas.get(i) + "\");\n";
+                String query;
+                if(i!=1)
+                    query = "insert into dim_date values (" + i + ", \"" + datas.get(i) + "\");\n";
+                else
+                    query = "insert into dim_date values (" + i + ", " + datas.get(i) + ");\n";
                 fos.write(query.getBytes());
                 fos.flush();
             }
@@ -164,8 +167,11 @@ public class scriptsTabelas {
             FileOutputStream fos = new FileOutputStream(new File("povoamento2.sql"),true);
             int i=1;
             for (String e : exams.getProfs()) {
-
-                String query = "insert into dim_prof values (" + e  + ");\n";
+                String query;
+            if(!e.equals("1"))
+                query = "insert into dim_prof values (" + e  +",null);\n";
+            else
+                query = "insert into dim_prof values (" + e  +",\"NA\");\n";
                 fos.write(query.getBytes());
                 fos.flush();
                 i++;
@@ -255,6 +261,28 @@ public class scriptsTabelas {
             for (Integer e : map.keySet()) {
 
                 String query = "insert into dim_intervention values (" + e + ",\"" + map.get(e) +"\");\n";
+                fos.write(query.getBytes());
+                fos.flush();
+                i++;
+            }
+
+            fos.flush();
+            fos.close();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void dim_cause(Map<Integer,String> map) {
+
+
+
+        try {
+            FileOutputStream fos = new FileOutputStream(new File("povoamento3.sql"),true);
+            int i=1;
+            for (Integer e : map.keySet()) {
+
+                String query = "insert into dim_desc_external_cause values (" + e + ",\"" + map.get(e) +"\");\n";
                 fos.write(query.getBytes());
                 fos.flush();
                 i++;
